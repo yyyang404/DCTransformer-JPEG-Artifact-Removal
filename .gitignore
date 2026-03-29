@@ -1,0 +1,31 @@
+# OS / editor
+.DS_Store
+.idea/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Runtime / logs
+*.log
+*.pid
+nohup_logs/
+
+# Local temp and generated outputs
+testsets_mod8/icb-color8bit/
+dataset/
+local_save/
+test_results/
+
+
+# Training artifacts and checkpoints
+train_pth/
+*.ckpt
+*.pt
+
+# Local experiment scratch/history
+archived/

@@ -1,0 +1,9 @@
+albumentations
+einops
+numpy
+opencv-python
+PyYAML
+torch
+torchinfo
+tqdm
+wandb

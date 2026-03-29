@@ -1,0 +1,37 @@
+runtime:
+  seed: 42
+  device: auto
+  use_data_parallel: true
+  device_ids: [0, 1, 2, 3]
+  show_progress: true
+
+model:
+  type: dctransformer
+  mode: color
+  input_dim: 64
+  dim: 160
+  num_groups: 6
+  num_blocks_in_group: 4
+
+paths:
+  ckpt_path: ./local_save/color_doublejpeg/best.ckpt
+  output_dir: ./test_results/double_jpeg
+
+eval:
+  double_jpeg: true
+  save_images: false
+  print_per_image: false
+  calc_freq_metrics: false
+  double:
+    qf_pairs:
+      - [10, 90, 0, 0]
+      - [90, 10, 0, 0]
+      - [75, 95, 0, 0]
+      - [95, 75, 0, 0]
+      - [10, 90, 4, 4]
+      - [90, 10, 4, 4]
+      - [75, 95, 4, 4]
+      - [95, 75, 4, 4]
+    jpeg_root: ./dataset/double_jpeg
+    gt_pattern: ./testsets_mod8/live1/*.bmp
+    output_subdir: double_eval

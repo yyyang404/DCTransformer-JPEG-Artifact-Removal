@@ -1,0 +1,39 @@
+runtime:
+  seed: 42
+  device: auto
+  use_data_parallel: false
+  device_ids: [0,1,2,3]
+  show_progress: true
+
+model:
+  type: dctransformer
+  mode: gray
+  input_dim: 64
+  dim: 160
+  num_groups: 6
+  num_blocks_in_group: 4
+
+paths:
+  ckpt_path: ./local_save/gray_s2/best.ckpt
+  output_dir: ./test_results/gray
+
+eval:
+  # Paper Table 2 (Gray): Classic5 / LIVE1 / BSDS500 at QF 10/20/30/40.
+  double_jpeg: false
+  sets: [classic5, live1, bsds500]
+  qfs: [10, 20, 30, 40]
+  save_images: false
+  save_input_images: false
+  save_gt_images: false
+  print_per_image: false
+  calc_freq_metrics: false
+  single_refs:
+    live1_pattern: ./testsets_mod8/live1/*.bmp
+    bsds500_pattern: ./testsets_mod8/bsds500/*.jpg
+    urban100_pattern: ./testsets_mod8/Urban100/*.png
+    icb_pattern: ./testsets_mod8/icb-color8bit/*.ppm
+    classic5_pattern: ./testsets_mod8/classic5/*.bmp
+    set5_pattern: ./testsets_mod8/Set5/*.png
+  gray_color2gray_overrides:
+    classic5: false
+    set5: false

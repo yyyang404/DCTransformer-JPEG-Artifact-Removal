@@ -1,0 +1,95 @@
+runtime:
+  seed: 42
+  device: auto
+  use_data_parallel: true
+  device_ids: [0, 1, 2, 3]
+
+model:
+  type: dctransformer
+  mode: color
+  input_dim: 64
+  dim: 160
+  num_groups: 6
+  num_blocks_in_group: 4
+
+paths:
+  save_ckpt_path: ./local_save/color_doublejpeg
+  resume_ckpt_path: ""
+  load_model_path: ""
+
+checkpoint:
+  save_top_k: 5
+  keep_last_k: 5
+
+wandb:
+  enabled: false
+  project: dctransformer
+  dir: ./local_save/wandb
+  run_name: ""
+  mode: online
+  log_interval: 20
+
+train:
+  enabled: true
+  double_jpeg: true
+  epochs: 200
+  batch_size: 128
+  num_workers: 44
+  patch_size: 320
+  loader_type: standard
+  qf_range: [10, 100, 10]
+  custom_qf: true
+  custom_shift: true
+  sample_per_epoch: 0
+  limit_train_images: 0
+  max_train_iters: 0
+  perf_log_interval: 20
+  save_every_epoch_when_no_eval: true
+
+data:
+  train_patterns:
+    - ./dataset/Flickr2K/Flickr2K_HR/*.png
+    - ./dataset/DIV2K/DIV2K_train_HR/*.png
+    - ./dataset/LSDIR/LSDIR_hd/**/*.png
+
+loss:
+  name: dual-c
+  balance_ratio: 255.0
+  freq_mode: low
+  ycbcr_ratio: [2.0, 1.0]
+
+optimizer:
+  name: adamw
+  base_lr: 0.0002
+  grad_clip: 0.2
+
+scheduler:
+  name: warmup+cosine
+  warmup_ratio: 0.2
+  warmup_start_lr: 0.000005
+  cosine_max_lr: 0.000005
+  cosine_min_lr: 0.000001
+
+eval:
+  enabled: true
+  every_n_epochs: 1
+  set: live1
+  qfs: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+  single_refs:
+    live1_pattern: ./testsets_mod8/live1/*.bmp
+    bsds500_pattern: ./testsets_mod8/bsds500/*.jpg
+    classic5_pattern: ./testsets_mod8/classic5/*.bmp
+  double:
+    qf_pairs:
+      - [10, 90, 0, 0]
+      - [90, 10, 0, 0]
+      - [75, 95, 0, 0]
+      - [95, 75, 0, 0]
+      - [10, 90, 4, 4]
+      - [90, 10, 4, 4]
+      - [75, 95, 4, 4]
+      - [95, 75, 4, 4]
+    jpeg_root: ./dataset/double_jpeg
+    gt_pattern: ./testsets_mod8/live1/*.bmp
+    save_images: false
+    image_out_dir: ./double_eval
