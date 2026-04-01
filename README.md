@@ -3,6 +3,7 @@
 Official **training and evaluation** implementation of [JPEG Quantized Coefficient Recovery via DCT Domain Spatial-Frequential Transformer (DCT)
 ](https://arxiv.org/abs/2409.14364) for JPEG artifact removal.
 
+
 ## Codebase Overview
 
 - `train.py`: unified training entry, including YAML config loading, checkpoint rotation, best-checkpoint aliasing, optional W&B logging, and periodic validation.
@@ -11,7 +12,10 @@ Official **training and evaluation** implementation of [JPEG Quantized Coefficie
 - `dctransformer/data/`: dataset definitions and JPEG/DCT image processing helpers.
 - `configs/`: checked-in release presets. All tracked paths are repository-relative by default.
 
-## Environment Setup
+##  Setup
+
+
+**Environment:**
 
 ```bash
 conda create -y -n dct python=3.10 pip
@@ -20,15 +24,11 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-## Path Policy
+**Model Weights:** [[Huggingface] DCT-JPEG-Artifact-Removal](https://huggingface.co/yyyang/DCT-JPEG-Artifact-Removal)
 
-The checked-in YAML configs assume you run commands from the repository root and keep local artifacts under:
+**Data/Model Paths:**
 
-```text
-./dataset/
-./local_save/
-./test_results/
-```
+The YAML configs assume you run commands from the repository root and keep local artifacts under `./dataset/`
 
 If your datasets or checkpoints live elsewhere, update only the relevant YAML path fields such as `data.train_patterns`, `paths.ckpt_path`, `paths.resume_ckpt_path`.
 
@@ -44,8 +44,9 @@ The full eval presets expect:
 - `configs/eval.color.yaml`: `./local_save/color/best.ckpt`
 - `configs/eval.gray.yaml`: `./local_save/gray/best.ckpt`
 
-## Training Data Setup
+## Train
 
+###  Data Setup
 Download training data with:
 
 ```bash
@@ -60,8 +61,7 @@ dataset/Flickr2K/Flickr2K_HR/*.png
 dataset/LSDIR/LSDIR_hd/**/*.png
 ```
 
-## Train
-
+### Training 
 ```bash
 python train.py --config configs/train.color.yaml
 python train.py --config configs/train.gray.yaml
