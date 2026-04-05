@@ -1,7 +1,7 @@
 # DCT JPEG Artifact Removal
 
 Official **training and evaluation** implementation of [JPEG Quantized Coefficient Recovery via DCT Domain Spatial-Frequential Transformer (DCT)
-](https://arxiv.org/abs/2409.14364) for JPEG artifact removal.
+](https://arxiv.org/abs/2308.09110)) for JPEG artifact removal.
 
 
 ## Codebase Overview
